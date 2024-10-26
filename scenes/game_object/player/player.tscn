@@ -1,11 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbj2cjg1fqcug"]
+[gd_scene load_steps=8 format=3 uid="uid://cbj2cjg1fqcug"]
 
 [ext_resource type="Script" path="res://scenes/game_object/player/player.gd" id="1_rktea"]
 [ext_resource type="Texture2D" uid="uid://c1fovamt4me6x" path="res://scenes/game_object/player/player.png" id="1_yeqjb"]
 [ext_resource type="PackedScene" uid="uid://nge3qpfeehug" path="res://scenes/ability/sword_ability_controller/sword_ability_controller.tscn" id="2_dd3fh"]
+[ext_resource type="PackedScene" uid="uid://djoj3mubmbhll" path="res://scenes/component/health_component.tscn" id="2_nx78d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m526b"]
 radius = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7xdtr"]
+radius = 7.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eh8uh"]
 radius = 5.0
@@ -15,22 +19,36 @@ collision_layer = 0
 motion_mode = 1
 script = ExtResource("1_rktea")
 
+[node name="HealthComponent" parent="." instance=ExtResource("2_nx78d")]
+
 [node name="AbilityManager" type="Node" parent="."]
 
 [node name="SwordAbilityController" parent="AbilityManager" instance=ExtResource("2_dd3fh")]
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="DamageIntervalTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="PickupArea2D" type="Area2D" parent="."]
 position = Vector2(0, -5)
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea2D"]
 position = Vector2(0, 5)
 shape = SubResource("CircleShape2D_m526b")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_yeqjb")
 offset = Vector2(0, -8)
+
+[node name="CollisionArea2D" type="Area2D" parent="."]
+position = Vector2(0, -7)
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea2D"]
+shape = SubResource("CircleShape2D_7xdtr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
